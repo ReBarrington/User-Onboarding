@@ -10,7 +10,7 @@ const FormComponent = ({ values, errors, touched, status }) => {
         status && setFormInfo(formInfo => [...formInfo, status]);
     }, [status]);
     return (
-        <div classname="form">
+        <div className="form">
             <Form>
                 <label htmlFor="name">
                     Name:
@@ -20,6 +20,11 @@ const FormComponent = ({ values, errors, touched, status }) => {
                         name="name"
                         placeholder="name"
                         />
+                        {/* touched is if input has been visited, errors are captured from Yup validation. 
+                        If has been visited && errors exist for that input => render JSX to show errors */}
+                        {touched.name && errors.name && (
+                        <p className="errors">{errors.name}</p>
+                        )}
                 </label>
                 <label htmlFor="email">
                     Email:
