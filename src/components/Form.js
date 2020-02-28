@@ -3,12 +3,18 @@ import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
+
+
+
+
 const FormComponent = ({ values, errors, touched, status }) => {
     const [formInfo, setFormInfo] = useState([]);
+
     useEffect(() => {
         console.log("status has changed!", status);
         status && setFormInfo(formInfo => [...formInfo, status]);
     }, [status]);
+
     return (
         <div className="form">
             <Form>
@@ -34,6 +40,9 @@ const FormComponent = ({ values, errors, touched, status }) => {
                         name="email"
                         placeholder="email"
                         />
+                         {touched.email && errors.email && (
+                        <p className="errors">{errors.email}</p>
+                        )}
                 </label>
                 <label htmlFor="password">
                     Password:
@@ -55,6 +64,13 @@ const FormComponent = ({ values, errors, touched, status }) => {
                 </label>
                 <button type="submit">Submit!</button>
             </Form>
+            {/* <pre>{JSON.stringify(values, null, 2)}</pre> */}
+            {/* <pre>{JSON.stringify(errors, null, 2)}</pre> */}
+            {formInfo.map(info => {
+                return (
+                    <h3>{info.name}</h3>
+                );
+            })}
         </div>
     )
 }
@@ -74,8 +90,9 @@ const FormikFormComponent = withFormik({
     }),
     handleSubmit(values, { setStatus, resetForm }) {
         console.log("submitting", values);
+        console.log(values.name, " is username")
         axios
-            .post("https://reqres.in/api/users/", values)
+            .post("https://reqres.in/api/users", values)
             .then(res => {
                 console.log("success", res);
                 setStatus(res.data);
